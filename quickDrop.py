@@ -50,8 +50,8 @@ def dropBall(key):
 
 def main():
     global numBalls
-    countThread = threading.Thread(target=countdown, args=(50,))
-    ballThread = threading.Thread(target=dropBall, args=())
+    #countThread = threading.Thread(target=countdown, args=(50,)) -> have countdown as daemon thread/background thread?
+    #ballThread = threading.Thread(target=dropBall, args=())
 
     print("Welcome to QuickDrop! The main objective of this game is to land all 50 balls within the buckets in a certain amount of time!")
     print("Your time for this session is 50 seconds") # Adjust countdown based on user-selected difficulty (reduce time)
