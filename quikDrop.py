@@ -3,6 +3,11 @@
 
 # Notes:
 # Adjust countdown based on user-selected difficulty (reduce time)
+# Loops:
+    # Replay loop
+    # Incorrect input loop
+# Add a streak bonus..?
+# Tracking high score
 
 
 import threading  # Allows for multithreaded processes (countdown(), listener())
@@ -38,14 +43,14 @@ def countdown(seconds, listener):
 
 
 # Unlocks key once released
-def onRelease(key):
+def on_release(key):
     global canPress
     if key == keyboard.Key.shift_l:
         canPress = True
 
 
 # Drops ball based on userInput
-def dropBall(key):
+def drop_ball(key):
     global numBalls, ballsIn, ballsMiss, canPress, timeUp
 
     if key == keyboard.Key.shift_l and canPress and numBalls > 0 and not timeUp:
@@ -67,6 +72,7 @@ def dropBall(key):
     elif key == keyboard.Key.shift_l and numBalls == 0:  # All balls dropped condition
         print("\nGame over!")
         return False  # Return false to stop the Listener
+    return None
 
 
 def main():
@@ -74,19 +80,19 @@ def main():
     print("Welcome to QuickDrop! The main objective of this game is to land all 50 balls in buckets within a certain amount of time!")
     print("Your time for this session is 50 seconds")
 
-    playReady = input("Are you ready?[y/n]: ").lower()
+    play_ready = input("Are you ready?[y/n]: ").lower()
 
-    playStatus = True  # Tracks T/F to keep game active or pause game
-    while playStatus == True:
-        if playReady == 'y' or playReady == "yes":
+    play_status = True  # Tracks T/F to keep game active or pause game
+    while play_status:
+        if play_ready == 'y' or play_ready == "yes":
             print("\nLet's begin!")
 
-            listener = keyboard.Listener(on_press=dropBall, on_release=onRelease)
+            listener = keyboard.Listener(on_press=drop_ball, on_release=on_release)
             listener.start()
 
             # Allocate countdown to a daemon thread, prioritize dropBall
-            timeThread = threading.Thread(target=countdown, daemon=True, args=(countTime, listener))
-            timeThread.start()
+            time_thread = threading.Thread(target=countdown, daemon=True, args=(countTime, listener))
+            time_thread.start()
 
             listener.join()
 
@@ -96,7 +102,7 @@ def main():
         else:
             print("Loop ended!")
 
-        playStatus = False
+        play_status = False
 
 
 main()
